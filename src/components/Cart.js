@@ -59,7 +59,7 @@ const Cart = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-purple-900 to-black p-4">
+    <div className="font-inter min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-purple-900 to-black p-4">
       <h1 className="mt-40 text-3xl md:text-5xl font-bold text-white mb-6">Cart</h1>
 
       <div className="w-full max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl bg-white rounded-lg shadow-lg p-4 sm:p-6 max-h-[80vh] overflow-y-auto">
