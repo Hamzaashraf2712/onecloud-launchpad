@@ -34,7 +34,8 @@ const MainComponent = () => {
           Must be between 1 and 64 characters in length.
           Can contain letters, numbers, and hyphens.
           Must start with a letter or number, and end with a letter or number.
-          Cannot contain consecutive hyphens.`,
+          Cannot contain consecutive hyphens.
+          `,
         },
       };
 
@@ -46,13 +47,13 @@ const MainComponent = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-10 bg-purple-900 text-white">
+    <div className="bg-[#21093D] text-[#B5DAFF] mt-10 grid grid-cols-1 md:grid-cols-2 gap-8 p-10 ">
       {isLoaded ? (
         <>
           {/* Form Section */}
           <div>
-            <h2 className="text-xl mb-4">{formData.title}</h2>
-            <DynamicForm formData={formData.fields} />
+          <h2 className="text-4xl pt-4 font-bold mb-4 text-center">{formData.title}</h2>
+          <DynamicForm formData={formData.fields} />
             {/* Render buttons */}
             {formData.buttons.map((button, index) => (
               <button
@@ -66,9 +67,9 @@ const MainComponent = () => {
           </div>
 
           {/* Knowledge Base Section */}
-          <div className="bg-purple-800 p-6 rounded-lg">
-            <h2 className="text-xl mb-4">{formData.knowledgeBase.title}</h2>
-            <p className="text-sm">
+          <div className="bg-[#3C054D] text-[#AF9CDB] p-6 rounded-lg">
+          <h2 className="text-4xl mb-4 font-bold text-center">Knowledge Base</h2>
+          <p className="text-xl h-[90%] overflow-y-auto">
               {formData.knowledgeBase.content}
             </p>
           </div>

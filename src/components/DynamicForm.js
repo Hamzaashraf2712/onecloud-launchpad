@@ -2,7 +2,7 @@ import React from 'react';
 
 const DynamicForm = ({ formData }) => {
   return (
-    <div className="bg-purple-900 text-white p-6 rounded-lg max-h-screen overflow-y-auto">
+    <div className="bg-[#21093D] text-white p-6 rounded-lg max-h-screen overflow-y-auto">
       {formData.map((field, index) => (
         <div key={index} className="mb-4">
           <label className="block mb-2">{field.label}</label>

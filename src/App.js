@@ -9,16 +9,17 @@ import NextProjectSection from './components/homepage/NextProjectSection';
 import MoreFeature from './components/homepage/MoreFeature';
 import ProjectCreationRequest from './components/ProjectCreationRequest';
 import ProjectValidation from './components/ProjectValidation';
-
+import MainComponent from './components/MainComponent'
 function App() {
   return (<div className="font-inter">
     <Navbar />
+    <MainComponent />
     {/* <ProjectCreationRequest /> */}
       {/* <ProjectValidation /> */}
-  <Hero />
+  {/* <Hero />
     <Features />
     <MoreFeature />
-    <NextProjectSection />
+    <NextProjectSection /> */}
     {/* <Cart /> */}
     <Footer />
     </div>
