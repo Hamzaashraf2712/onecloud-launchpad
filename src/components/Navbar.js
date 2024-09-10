@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaShoppingCart, FaBars } from 'react-icons/fa'; // Importing icons from react-icons
 
 const Navbar = () => {
-  const [isAuth, setIsAuth] = useState(true); // Simulating authentication state
+  const [isAuth, setIsAuth] = useState(false); // Simulating authentication state
   const [cartItems, setCartItems] = useState(3); // Example of cart item count
 
   return (
