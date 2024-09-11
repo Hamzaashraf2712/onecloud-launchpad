@@ -10,12 +10,17 @@ import MoreFeature from './components/homepage/MoreFeature';
 import ProjectCreationRequest from './components/ProjectCreationRequest';
 import ProjectValidation from './components/ProjectValidation';
 import MainComponent from './components/MainComponent'
+import CloudPlatformPopup from './components/CloudPlatformPopup';
+import SidebarWithPopup from './components/SidebarWithPopup';
+import PopupModal from './components/PopupModal';
 function App() {
   return (<div className="font-inter">
     <Navbar />
-    <MainComponent />
+    {/* <MainComponent /> */}
     {/* <ProjectCreationRequest /> */}
       {/* <ProjectValidation /> */}
+{/* <SidebarWithPopup/> */}
+< PopupModal />
   {/* <Hero />
     <Features />
     <MoreFeature />
