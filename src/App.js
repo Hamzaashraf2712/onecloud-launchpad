@@ -18,7 +18,7 @@ function App() {
     <Navbar />
     {/* <MainComponent /> */}
     {/* <ProjectCreationRequest /> */}
-      {/* <ProjectValidation /> */}
+      <ProjectValidation />
 {/* <SidebarWithPopup/> */}
 < PopupModal />
   {/* <Hero />
