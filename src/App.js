@@ -16,9 +16,9 @@ import PopupModal from './components/PopupModal';
 function App() {
   return (<div className="font-inter">
     <Navbar />
-    {/* <MainComponent /> */}
+    <MainComponent />
     {/* <ProjectCreationRequest /> */}
-      <ProjectValidation />
+      {/* <ProjectValidation /> */}
 {/* <SidebarWithPopup/> */}
 < PopupModal />
   {/* <Hero />
