@@ -16,6 +16,22 @@ const MainComponent = () => {
           { label: "Location", type: "select", options: ["East US", "West US", "Central US"], name: "location", required: true },
           { label: "Username", type: "text", placeholder: "Enter Username", name: "username", required: true },
           { label: "Address Space", type: "text", placeholder: "Enter Address Space", name: "addressSpace", required: true },
+          { label: "Subscription Name", type: "text", placeholder: "Enter Subscription Name", name: "subscriptionName", required: true },
+          { label: "Resource Group Name", type: "text", placeholder: "Enter Resource Group Name", name: "resourceGroupName", required: true },
+          { label: "Location", type: "select", options: ["East US", "West US", "Central US"], name: "location", required: true },
+          { label: "Username", type: "text", placeholder: "Enter Username", name: "username", required: true },
+          { label: "Address Space", type: "text", placeholder: "Enter Address Space", name: "addressSpace", required: true },
+          { label: "Subscription Name", type: "text", placeholder: "Enter Subscription Name", name: "subscriptionName", required: true },
+          { label: "Resource Group Name", type: "text", placeholder: "Enter Resource Group Name", name: "resourceGroupName", required: true },
+          { label: "Location", type: "select", options: ["East US", "West US", "Central US"], name: "location", required: true },
+          { label: "Username", type: "text", placeholder: "Enter Username", name: "username", required: true },
+          { label: "Address Space", type: "text", placeholder: "Enter Address Space", name: "addressSpace", required: true },
+          { label: "Subscription Name", type: "text", placeholder: "Enter Subscription Name", name: "subscriptionName", required: true },
+          { label: "Resource Group Name", type: "text", placeholder: "Enter Resource Group Name", name: "resourceGroupName", required: true },
+          { label: "Location", type: "select", options: ["East US", "West US", "Central US"], name: "location", required: true },
+          { label: "Username", type: "text", placeholder: "Enter Username", name: "username", required: true },
+          { label: "Address Space", type: "text", placeholder: "Enter Address Space", name: "addressSpace", required: true },
+          
         ],
         buttons: [
           { label: "Add Tags", action: "addTags" },
@@ -49,10 +65,11 @@ const MainComponent = () => {
         <>
           {/* Form Section */}
           <div className="flex flex-col h-full">
-            <h2 className="text-3xl font-bold mb-2 pt-10 text-center">{formData.title}</h2>
+            <h2 className="text-3xl font-bold mb-2 pt-12 text-center">{formData.title}</h2>
 
             {/* Dynamic Form */}
-            <div className="bg-[#21093D] text-white p-4 rounded-lg max-h-screen overflow-y-auto">
+            <div className="pl-5 overflow-y-auto h-[70vh]">
+
               {formData.fields.map((field, index) => (
                 <div key={index} className="mb-3">
                   <label className="block mb-1">{field.label}</label>
@@ -96,12 +113,16 @@ const MainComponent = () => {
           </div>
 
           {/* Knowledge Base Section */}
-          <div className="bg-[#3C054D] text-[#AF9CDB] p-4 rounded-lg flex flex-col justify-between h-full">
-            <h2 className="text-3xl mb-2 font-bold text-center pt-6">Knowledge Base</h2>
-            <p className="text-lg h-[90%] overflow-y-auto">
-              {formData.knowledgeBase.content}
-            </p>
-          </div>
+          <div className="bg-[#3C054D] text-[#AF9CDB] mt-15 p-4 rounded-lg flex flex-col h-[80vh]">
+  <h2 className="text-3xl pt-8 mb-2 font-bold text-center">Knowledge Base</h2>
+  
+  {/* Fixed height and scrollable content area */}
+  <div className="overflow-y-auto h-[70vh]">
+    <p className="text-lg text-center">
+      {formData.knowledgeBase.content}
+    </p>
+  </div>
+</div>
         </>
       ) : (
         <p>Loading...</p>
