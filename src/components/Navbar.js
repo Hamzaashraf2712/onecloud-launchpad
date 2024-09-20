@@ -1,54 +1,51 @@
-import React, { useState } from 'react';
-import { FaShoppingCart, FaBars } from 'react-icons/fa'; // Importing icons from react-icons
+import React from 'react';
+import { FaShoppingCart, FaBars } from 'react-icons/fa';
+import { useNavigate, Link } from 'react-router-dom'; // Import Link from react-router-dom
 
-const Navbar = () => {
-  const [isAuth, setIsAuth] = useState(false); // Simulating authentication state
-  const [cartItems, setCartItems] = useState(3); // Example of cart item count
+const Navbar = ({ isAuth }) => {
+  const navigate = useNavigate();
 
   return (
     <nav className="font-inter bg-black text-white p-4 flex justify-between items-center fixed top-0 left-0 w-full z-50">
       {/* Logo Section */}
       <div className="flex items-center">
-        <span className="text-base md:text-lg font-bold font-inter">OneCloud</span>
+        <Link to="/" className="text-base md:text-lg font-bold"> {/* Link to homepage */}
+          OneCloud
+        </Link>
       </div>
 
       {/* Buttons Section */}
       <div className="flex space-x-2 md:space-x-4 items-center">
-        {!isAuth && (
+        {!isAuth ? (
           <>
-            {/* Before login navbar */}
-            <button className="bg-gray-800 hover:bg-gray-700 text-white font-semibold text-xs md:text-sm py-2 px-3 md:px-4 rounded">
+            <button 
+              onClick={() => navigate('/create-new-project')}
+              className="bg-gray-800 hover:bg-gray-700 text-white font-semibold text-xs md:text-sm py-2 px-3 md:px-4 rounded"
+            >
               Create new project
             </button>
-            <button className="bg-gray-800 hover:bg-gray-700 text-white font-semibold text-xs md:text-sm py-2 px-3 md:px-4 rounded">
+            <button 
+              onClick={() => navigate('/validate-project')}
+              className="bg-gray-800 hover:bg-gray-700 text-white font-semibold text-xs md:text-sm py-2 px-3 md:px-4 rounded"
+            >
               Go to my project
             </button>
           </>
-        )}
-
-        {isAuth && (
+        ) : (
           <>
-            {/* After login navbar */}
             <button className="bg-gray-800 hover:bg-gray-700 text-white font-semibold text-xs md:text-sm py-2 px-3 md:px-4 rounded">
               Onboard My Environment
             </button>
 
-            {/* Cart Icon with Hamburger */}
             <div className="flex items-center space-x-4">
-              {/* Cart Icon */}
               <div className="relative">
-                <FaShoppingCart className="text-white text-xl" />
-                {cartItems > 0 && (
-                  <span className="absolute -top-2 -right-2 inline-block w-3 h-3 text-[10px] font-bold text-center text-white bg-red-600 rounded-full">
-                    {cartItems}
-                  </span>
-                )}
+                <button onClick={() => navigate('/cart')} className="text-white text-xl">
+                  <FaShoppingCart className="text-white text-xl" />
+                </button>
+                {/* Cart logic here */}
               </div>
 
-              {/* Hamburger Icon */}
-              <button className="text-white text-xl">
-                <FaBars />
-              </button>
+              <FaBars />
             </div>
           </>
         )}

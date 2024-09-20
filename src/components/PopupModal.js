@@ -39,12 +39,7 @@ const PopupModal = () => {
       {/* Thin Black Bar with Toggle Button */}
       {!isSidebarVisible && (
         <div className="fixed inset-y-0 left-0 w-10 bg-black flex items-center justify-center z-30">
-          <button
-            className="p-2 rounded-full hover:bg-gray-700 shadow-lg"
-            onClick={toggleSidebar}
-          >
-            <img src={sidebarToggleIconUrl} alt="Open Sidebar" className="w-6 h-6" />
-          </button>
+          
         </div>
       )}
 
@@ -85,8 +80,11 @@ const PopupModal = () => {
           className="absolute right-[-40px] top-1/2 transform -translate-y-1/2 bg-gray-800 p-2 rounded-full hover:bg-gray-700"
           onClick={toggleSidebar}
         >
-          <img src={closeSidebarIconUrl} alt="Close Sidebar" className="w-6 h-6" />
-        </button>
+ <img
+            src={isSidebarVisible ? closeSidebarIconUrl : sidebarToggleIconUrl}
+            alt={isSidebarVisible ? "Close Sidebar" : "Open Sidebar"}
+            className="w-6 h-6"
+          />        </button>
       </div>
 
       {/* Popup Modal */}

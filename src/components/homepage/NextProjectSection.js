@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const NextProjectSection = () => {
+  const navigate = useNavigate(); // Initialize navigation
+
   return (
     <div>
       {/* Main Section */}
@@ -10,16 +13,26 @@ const NextProjectSection = () => {
             Create your next project today!
           </h2>
           <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
-            <button className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-8 rounded shadow">
+            {/* Create New Project Button */}
+            <button 
+              onClick={() => navigate('/create-new-project')}
+              className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-8 rounded shadow"
+            >
               Create new project
             </button>
-            <button className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-8 rounded shadow">
+
+            {/* Go to My Project Button */}
+            <button 
+              onClick={() => navigate('/validate-project')}
+              className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-8 rounded shadow"
+            >
               Go to my project
             </button>
           </div>
         </div>
       </section>
-      </div>
-      );
-    };
-      export default NextProjectSection;
+    </div>
+  );
+};
+
+export default NextProjectSection;
