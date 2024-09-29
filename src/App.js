@@ -14,6 +14,7 @@ import PopupModal from './components/PopupModal';
 
 function App() {
   const [isAuth, setIsAuth] = useState(false); // Authentication state
+  const [cloudPlatform, setCloudPlatform] = useState(''); // State for the selected cloud platform
 
   return (
     <Router>
@@ -37,8 +38,10 @@ function App() {
           <Route path="/dashboard" element={
             isAuth ? (
               <>
-                <PopupModal />
-                <MainComponent />
+                {/* Pass cloudPlatform and setCloudPlatform to PopupModal */}
+                <PopupModal cloudPlatform={cloudPlatform} setCloudPlatform={setCloudPlatform} />
+                {/* Pass cloudPlatform to MainComponent */}
+                <MainComponent cloudPlatform={cloudPlatform} />
               </>
             ) : (
               <Navigate to="/validate-project" />
