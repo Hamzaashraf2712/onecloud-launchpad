@@ -35,6 +35,12 @@ const PopupModal = ({ cloudPlatform, setCloudPlatform }) => {
     setIsPopupVisible(false);
   };
 
+  // Copy function for Project ID
+  const copyProjectId = () => {
+    navigator.clipboard.writeText('RITM-2408070252-12'); // Replace with dynamic project ID if needed
+    alert('Project ID copied to clipboard!');
+  };
+
   return (
     <>
       {/* Thin Black Bar with Toggle Button */}
@@ -48,7 +54,9 @@ const PopupModal = ({ cloudPlatform, setCloudPlatform }) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 transform ${isSidebarVisible ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 w-64 bg-gray-900 h-screen p-5 text-white shadow-lg z-40`}
+        className={`fixed inset-y-0 left-0 transform ${
+          isSidebarVisible ? 'translate-x-0' : '-translate-x-full'
+        } transition-transform duration-300 w-64 bg-gray-900 h-screen p-5 text-white shadow-lg z-40`}
       >
         <h1 className="text-xl font-bold">Project Details</h1>
 
@@ -65,6 +73,32 @@ const PopupModal = ({ cloudPlatform, setCloudPlatform }) => {
             <option value="AWS">AWS</option>
             <option value="GCP">GCP</option>
           </select>
+        </div>
+
+        {/* Customer Name */}
+        <div className="mt-4">
+          <label className="block text-sm">Customer Name</label>
+          <p className="text-lg font-semibold">QIA</p>
+        </div>
+
+        {/* Project Name */}
+        <div className="mt-4">
+          <label className="block text-sm">Project Name</label>
+          <p className="text-lg font-semibold">Cloud Hybrid Infrastructure</p>
+        </div>
+
+        {/* Project ID with Copy Button */}
+        <div className="mt-4 flex items-center">
+          <div className="flex-1">
+            <label className="block text-sm">Project ID</label>
+            <p className="text-lg font-semibold">RITM-2408070252-12</p>
+          </div>
+          <button
+            className="ml-2 bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600"
+            onClick={copyProjectId}
+          >
+            Copy
+          </button>
         </div>
 
         {/* Button for connecting to Azure environment */}
@@ -90,7 +124,7 @@ const PopupModal = ({ cloudPlatform, setCloudPlatform }) => {
         >
           <img
             src={isSidebarVisible ? closeSidebarIconUrl : sidebarToggleIconUrl}
-            alt={isSidebarVisible ? "Close Sidebar" : "Open Sidebar"}
+            alt={isSidebarVisible ? 'Close Sidebar' : 'Open Sidebar'}
             className="w-6 h-6"
           />
         </button>
@@ -113,10 +147,16 @@ const PopupModal = ({ cloudPlatform, setCloudPlatform }) => {
             </div>
 
             <div className="flex justify-between">
-              <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" onClick={closePopup}>
+              <button
+                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                onClick={closePopup}
+              >
                 Connect
               </button>
-              <button className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600" onClick={closePopup}>
+              <button
+                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+                onClick={closePopup}
+              >
                 Close
               </button>
             </div>
