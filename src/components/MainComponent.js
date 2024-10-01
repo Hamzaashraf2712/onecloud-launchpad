@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
 const MainComponent = ({ cloudPlatform }) => {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [sliderValues, setSliderValues] = useState({}); // To track slider values
+  const [sliderValues, setSliderValues] = useState({});
+  const [selectedDropdown, setSelectedDropdown] = useState({});
+  const [subFormData, setSubFormData] = useState({});
 
   // Simulate a backend call to get form data
   useEffect(() => {
@@ -17,21 +19,29 @@ const MainComponent = ({ cloudPlatform }) => {
             { label: "Virtual Network Name", type: "text", placeholder: "Enter Virtual Network Name", name: "vnetName", required: true },
             { label: "Subscription Name", type: "text", placeholder: "Enter Subscription Name", name: "subscriptionName", required: true },
             { label: "Resource Group Name", type: "text", placeholder: "Enter Resource Group Name", name: "resourceGroupName", required: true },
-            { label: "Location", type: "select", options: ["East US", "West US", "Central US"], name: "location", required: true },
+            {
+              label: "Location", type: "select", name: "location", options: ["East US", "West US", "Central US"], required: true,
+              subForms: {
+                "East US": [
+                  { label: "East US Specific Field", type: "text", placeholder: "Enter value for East US", name: "eastUsField" }
+                ],
+                "West US": [
+                  { label: "West US Specific Field", type: "text", placeholder: "Enter value for West US", name: "westUsField" }
+                ],
+                "Central US": [
+                  { label: "Central US Specific Field", type: "text", placeholder: "Enter value for Central US", name: "centralUsField" }
+                ],
+              },
+            },
             { label: "Enable Monitoring", type: "toggle", name: "enableMonitoring", required: false },
             { label: "CPU Limit", type: "slider", min: 1, max: 16, name: "cpuLimit", required: true },
           ],
-          buttons: [
-            { label: "Add Tags", action: "addTags" },
-            { label: "Add Subnet", action: "addSubnet" },
-          ],
+          buttons: [{ label: "Add Tags", action: "addTags" }],
           knowledgeBase: {
             title: "Knowledge Base",
-            content: `SQL Server on Azure VMs (SQL IaaS): SQL Server on Azure Virtual
-            Machines (VM) falls under the industry term of Infrastructure-as-a-Service
-            (IaaS) and allows full control over the SQL server instance and underlying OS.`,
+            content: `SQL Server on Azure VMs (SQL IaaS): SQL Server on Azure Virtual Machines (VM) falls under the industry term of Infrastructure-as-a-Service (IaaS) and allows full control over the SQL server instance and underlying OS. For more details, refer to the official Azure documentation.`,
             images: [
-              "https://example.com/image1.jpg", // Replace with actual image URLs
+              "https://example.com/image1.jpg",
               "https://example.com/image2.jpg",
             ],
           },
@@ -52,8 +62,7 @@ const MainComponent = ({ cloudPlatform }) => {
           ],
           knowledgeBase: {
             title: "Knowledge Base",
-            content: `AWS VPC: Amazon Virtual Private Cloud (VPC) is a logically isolated section
-            of the AWS cloud where you can launch AWS resources in a virtual network that you define.`,
+            content: `AWS VPC: Amazon Virtual Private Cloud (VPC) is a logically isolated section of the AWS cloud where you can launch AWS resources in a virtual network that you define. Learn more in the AWS documentation.`,
             images: [
               "https://example.com/aws1.jpg",
               "https://example.com/aws2.jpg",
@@ -76,8 +85,7 @@ const MainComponent = ({ cloudPlatform }) => {
           ],
           knowledgeBase: {
             title: "Knowledge Base",
-            content: `Google Cloud VPC: A Virtual Private Cloud (VPC) provides networking functionality to
-            Compute Engine virtual machine (VM) instances, Kubernetes Engine (GKE) clusters, and other resources.`,
+            content: `Google Cloud VPC: A Virtual Private Cloud (VPC) provides networking functionality to Compute Engine virtual machine (VM) instances, Kubernetes Engine (GKE) clusters, and other resources. For detailed guidance, refer to the Google Cloud documentation.`,
             images: [
               "https://example.com/gcp1.jpg",
               "https://example.com/gcp2.jpg",
@@ -104,22 +112,48 @@ const MainComponent = ({ cloudPlatform }) => {
     fetchFormData();
   }, [cloudPlatform]);
 
+  // Handle slider value change
   const handleSliderChange = (e) => {
     const { name, value } = e.target;
     setSliderValues((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle input change for main form fields
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handle dropdown selection
+  const handleDropdownChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedDropdown((prev) => ({ ...prev, [name]: value }));
+    // Reset subform data when location changes
+    setSubFormData({});
+  };
+
+  // Handle sub-form input change
+  const handleSubFormChange = (e) => {
+    const { name, value } = e.target;
+    setSubFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handle Add Tags button click (mock functionality)
+  const handleAddTags = () => {
+    alert("Tags added!");
+  };
+
   return (
     <div className="bg-[#21093D] text-[#B5DAFF] grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:h-screen">
-      {isLoaded ? (
+      {isLoaded && formData ? (
         <>
           {/* Form Section */}
-          <div className="flex flex-col h-full pl-4"> {/* Added left padding here */}
+          <div className="flex flex-col h-full pl-4">
             <h2 className="text-3xl font-bold mb-2 pt-12 text-center">{formData.title}</h2>
 
             {/* Dynamic Form */}
             <div className="pl-5 overflow-y-auto h-[70vh]">
-              {formData.fields.length > 0 ? (
+              {formData.fields && formData.fields.length > 0 ? (
                 formData.fields.map((field, index) => (
                   <div key={index} className="mb-3">
                     <label className="block mb-1">{field.label}</label>
@@ -128,7 +162,9 @@ const MainComponent = ({ cloudPlatform }) => {
                         className="w-full p-2 bg-purple-800 rounded-md text-white border border-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
                         name={field.name}
                         required={field.required || false}
+                        onChange={handleDropdownChange}
                       >
+                        <option value="">Select {field.label}</option>
                         {field.options.map((option, idx) => (
                           <option key={idx} value={option}>
                             {option}
@@ -141,70 +177,81 @@ const MainComponent = ({ cloudPlatform }) => {
                           type="checkbox"
                           className="form-checkbox h-6 w-6 text-purple-600"
                           name={field.name}
+                          onChange={handleInputChange}
                         />
-                        <span className="text-sm">{field.label}</span>
+                        <span className="text-white">{field.label}</span>
                       </label>
                     ) : field.type === 'slider' ? (
-                      <div className="flex items-center space-x-3">
-                        <input
-                          type="range"
-                          className="slider w-full h-2 bg-purple-600 rounded-full appearance-none focus:outline-none"
-                          min={field.min}
-                          max={field.max}
-                          name={field.name}
-                          value={sliderValues[field.name] || field.min}
-                          onChange={handleSliderChange}
-                          required={field.required || false}
-                        />
-                        <span className="slider-value text-white">
-                          {sliderValues[field.name] || field.min} {/* Displaying the selected value */}
-                        </span>
-                      </div>
+                      <input
+                        type="range"
+                        min={field.min}
+                        max={field.max}
+                        className="w-full h-2 bg-purple-700 rounded-lg appearance-none cursor-pointer"
+                        name={field.name}
+                        onChange={handleSliderChange}
+                      />
                     ) : (
                       <input
                         type={field.type}
+                        placeholder={field.placeholder}
                         className="w-full p-2 bg-purple-800 rounded-md text-white border border-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                        placeholder={field.placeholder || field.label}
                         name={field.name}
                         required={field.required || false}
+                        onChange={handleInputChange}
                       />
+                    )}
+                    
+                    {/* Render sub-form directly below the select dropdown */}
+                    {field.type === 'select' && selectedDropdown[field.name] && (
+                      <div className="pl-4">
+                        {field.subForms[selectedDropdown[field.name]]?.map((subField, idx) => (
+                          <div key={idx} className="mb-3">
+                            <label className="block mb-1">{subField.label}</label>
+                            <input
+                              type={subField.type}
+                              placeholder={subField.placeholder}
+                              className="w-full p-2 bg-purple-800 rounded-md text-white border border-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                              name={subField.name}
+                              onChange={handleSubFormChange}
+                            />
+                          </div>
+                        ))}
+                      </div>
                     )}
                   </div>
                 ))
               ) : (
-                <p className="text-red-500 text-center">No form fields available. Please select a cloud platform to continue.</p>
+                <p>No fields available.</p>
               )}
             </div>
 
-            {/* Render Buttons after form fields */}
-            {formData.buttons.length > 0 && (
-              <div className="mt-4 flex flex-col space-y-2">
-                {formData.buttons.map((button, index) => (
+            {/* Action Buttons */}
+            <div className="flex justify-center mt-4">
+              {formData.buttons && formData.buttons.length > 0 &&
+                formData.buttons.map((button, index) => (
                   <button
                     key={index}
-                    className="bg-purple-700 p-2 rounded-md w-full hover:bg-purple-800"
-                    onClick={() => alert(`${button.action} clicked`)}
+                    onClick={button.action === "addTags" ? handleAddTags : undefined}
+                    className="bg-purple-600 text-white p-2 rounded-md mx-2"
                   >
                     {button.label}
                   </button>
                 ))}
-              </div>
-            )}
+            </div>
           </div>
 
           {/* Knowledge Base Section */}
-          <div className="bg-[#3C054D] text-[#AF9CDB] mt-10 md:mt-0 md:ml-10 px-6 py-10 overflow-auto rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-4 text-center">{formData.knowledgeBase.title}</h2>
-            <p>{formData.knowledgeBase.content}</p>
-
-            {/* Render images in knowledge base */}
-            {formData.knowledgeBase.images && formData.knowledgeBase.images.length > 0 && (
-              <div className="mt-4 space-y-4">
-                {formData.knowledgeBase.images.map((image, index) => (
-                  <img key={index} src={image} alt={`Knowledge Base ${index}`} className="w-full mb-2 rounded-md" />
+          <div className="pl-4 h-full">
+            <h3 className="text-2xl font-semibold mb-2">Knowledge Base</h3>
+            <div className="bg-purple-800 p-4 rounded-md">
+              <h4 className="text-xl font-bold mb-2">{formData.knowledgeBase.title}</h4>
+              <p className="mb-2">{formData.knowledgeBase.content}</p>
+              <div className="grid grid-cols-2 gap-2">
+                {formData.knowledgeBase.images.map((img, index) => (
+                  <img key={index} src={img} alt="Knowledge Base" className="rounded-md" />
                 ))}
               </div>
-            )}
+            </div>
           </div>
         </>
       ) : (
