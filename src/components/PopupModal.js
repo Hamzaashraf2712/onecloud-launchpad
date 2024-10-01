@@ -111,11 +111,7 @@ const PopupModal = ({ cloudPlatform, setCloudPlatform }) => {
           </button>
         )}
 
-        {cloudPlatform !== 'Azure' && (
-          <p className="mt-4 text-red-500">
-            Please select Azure to connect to the environment
-          </p>
-        )}
+       
 
         {/* Button for closing sidebar */}
         <button

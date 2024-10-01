@@ -242,9 +242,8 @@ const MainComponent = ({ cloudPlatform }) => {
 
           {/* Knowledge Base Section */}
           <div className="pl-4 h-full">
-            <h3 className="text-2xl font-semibold mb-2">Knowledge Base</h3>
-            <div className="bg-purple-800 p-4 rounded-md">
-              <h4 className="text-xl font-bold mb-2">{formData.knowledgeBase.title}</h4>
+            <div className="bg-purple-800 p-2 m-[6%] rounded-md">
+              <h4 className="text-3xl  text-center font-bold mb-2">{formData.knowledgeBase.title}</h4>
               <p className="mb-2">{formData.knowledgeBase.content}</p>
               <div className="grid grid-cols-2 gap-2">
                 {formData.knowledgeBase.images.map((img, index) => (
