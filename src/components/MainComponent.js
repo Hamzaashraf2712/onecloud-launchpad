@@ -36,7 +36,11 @@ const MainComponent = ({ cloudPlatform }) => {
             { label: "Enable Monitoring", type: "toggle", name: "enableMonitoring", required: false },
             { label: "CPU Limit", type: "slider", min: 1, max: 16, name: "cpuLimit", required: true },
           ],
-          buttons: [{ label: "Add Tags", action: "addTags" }],
+          buttons: [
+            { label: "Add Tags", action: "addTags" },
+            { label: "Submit Data", action: "submitData" },
+            { label: "Test API Call", action: "testApiCall" },
+          ],
           knowledgeBase: {
             title: "Knowledge Base",
             content: `SQL Server on Azure VMs (SQL IaaS): SQL Server on Azure Virtual Machines (VM) falls under the industry term of Infrastructure-as-a-Service (IaaS) and allows full control over the SQL server instance and underlying OS. For more details, refer to the official Azure documentation.`,
@@ -59,6 +63,8 @@ const MainComponent = ({ cloudPlatform }) => {
           buttons: [
             { label: "Add Security Group", action: "addSecurityGroup" },
             { label: "Add Subnet", action: "addSubnet" },
+            { label: "Submit Data", action: "submitData" },
+            { label: "Test API Call", action: "testApiCall" },
           ],
           knowledgeBase: {
             title: "Knowledge Base",
@@ -82,6 +88,8 @@ const MainComponent = ({ cloudPlatform }) => {
           buttons: [
             { label: "Add Firewall Rule", action: "addFirewallRule" },
             { label: "Add Subnet", action: "addSubnet" },
+            { label: "Submit Data", action: "submitData" },
+            { label: "Test API Call", action: "testApiCall" },
           ],
           knowledgeBase: {
             title: "Knowledge Base",
@@ -138,9 +146,24 @@ const MainComponent = ({ cloudPlatform }) => {
     setSubFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle Add Tags button click (mock functionality)
-  const handleAddTags = () => {
-    alert("Tags added!");
+  // Handle button clicks
+  const handleButtonClick = (action) => {
+    switch(action) {
+      case "addTags":
+        alert("Tags added!");
+        break;
+      case "submitData":
+        console.log("Submitting data...", { ...formData, subFormData });
+        alert("Data submitted! Check console for details.");
+        break;
+      case "testApiCall":
+        alert("API call simulated! Check console for request details.");
+        console.log("Simulated API call with data:", { ...formData, subFormData });
+        break;
+      // Add cases for other buttons as needed
+      default:
+        break;
+    }
   };
 
   return (
@@ -155,64 +178,61 @@ const MainComponent = ({ cloudPlatform }) => {
             <div className="pl-5 overflow-y-auto h-[70vh]">
               {formData.fields && formData.fields.length > 0 ? (
                 formData.fields.map((field, index) => (
-                  <div key={index} className="mb-3">
-                    <label className="block mb-1">{field.label}</label>
-                    {field.type === 'select' ? (
-                      <select
-                        className="w-full p-2 bg-purple-800 rounded-md text-white border border-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                        name={field.name}
-                        required={field.required || false}
-                        onChange={handleDropdownChange}
-                      >
-                        <option value="">Select {field.label}</option>
-                        {field.options.map((option, idx) => (
-                          <option key={idx} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-                    ) : field.type === 'toggle' ? (
-                      <label className="flex items-center space-x-3">
-                        <input
-                          type="checkbox"
-                          className="form-checkbox h-6 w-6 text-purple-600"
-                          name={field.name}
-                          onChange={handleInputChange}
-                        />
-                        <span className="text-white">{field.label}</span>
-                      </label>
-                    ) : field.type === 'slider' ? (
-                      <input
-                        type="range"
-                        min={field.min}
-                        max={field.max}
-                        className="w-full h-2 bg-purple-700 rounded-lg appearance-none cursor-pointer"
-                        name={field.name}
-                        onChange={handleSliderChange}
-                      />
-                    ) : (
+                  <div key={index} className="mb-4">
+                    <label className="block text-lg font-semibold mb-1">{field.label}</label>
+                    {field.type === "text" || field.type === "number" ? (
                       <input
                         type={field.type}
-                        placeholder={field.placeholder}
-                        className="w-full p-2 bg-purple-800 rounded-md text-white border border-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
                         name={field.name}
-                        required={field.required || false}
+                        placeholder={field.placeholder}
+                        required={field.required}
                         onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded"
                       />
-                    )}
-                    
-                    {/* Render sub-form directly below the select dropdown */}
-                    {field.type === 'select' && selectedDropdown[field.name] && (
-                      <div className="pl-4">
-                        {field.subForms[selectedDropdown[field.name]]?.map((subField, idx) => (
-                          <div key={idx} className="mb-3">
-                            <label className="block mb-1">{subField.label}</label>
+                    ) : field.type === "select" ? (
+                      <select
+                        name={field.name}
+                        onChange={(e) => { handleDropdownChange(e); }}
+                        className="w-full p-2 border border-gray-300 rounded"
+                      >
+                        <option value="">Select...</option>
+                        {field.options.map((option, idx) => (
+                          <option key={idx} value={option}>{option}</option>
+                        ))}
+                      </select>
+                    ) : field.type === "toggle" ? (
+                      <input
+                        type="checkbox"
+                        name={field.name}
+                        onChange={handleInputChange}
+                        className="w-4 h-4"
+                      />
+                    ) : field.type === "slider" ? (
+                      <>
+                        <input
+                          type="range"
+                          min={field.min}
+                          max={field.max}
+                          name={field.name}
+                          onChange={handleSliderChange}
+                          className="w-full"
+                        />
+                        <span>{sliderValues[field.name] || field.min}</span>
+                      </>
+                    ) : null}
+
+                    {/* Subform Rendering */}
+                    {field.subForms && selectedDropdown[field.name] && (
+                      <div className="mt-4 pl-4 border-l-2 border-gray-300">
+                        {field.subForms[selectedDropdown[field.name]].map((subField, subIndex) => (
+                          <div key={subIndex} className="mb-4">
+                            <label className="block text-lg font-semibold mb-1">{subField.label}</label>
                             <input
                               type={subField.type}
-                              placeholder={subField.placeholder}
-                              className="w-full p-2 bg-purple-800 rounded-md text-white border border-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
                               name={subField.name}
+                              placeholder={subField.placeholder}
                               onChange={handleSubFormChange}
+                              className="w-full p-2 border border-gray-300 rounded"
                             />
                           </div>
                         ))}
@@ -223,34 +243,29 @@ const MainComponent = ({ cloudPlatform }) => {
               ) : (
                 <p>No fields available.</p>
               )}
-            </div>
 
-            {/* Action Buttons */}
-            <div className="flex justify-center mt-4">
-              {formData.buttons && formData.buttons.length > 0 &&
-                formData.buttons.map((button, index) => (
+              {/* Buttons */}
+              <div className="flex justify-center mt-6 space-x-4">
+                {formData.buttons.map((button, idx) => (
                   <button
-                    key={index}
-                    onClick={button.action === "addTags" ? handleAddTags : undefined}
-                    className="bg-purple-600 text-white p-2 rounded-md mx-2"
+                    key={idx}
+                    onClick={() => handleButtonClick(button.action)}
+                    className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
                   >
                     {button.label}
                   </button>
                 ))}
+              </div>
             </div>
           </div>
 
           {/* Knowledge Base Section */}
-          <div className="pl-4 h-full">
-            <div className="bg-purple-800 p-2 m-[6%] rounded-md">
-              <h4 className="text-3xl  text-center font-bold mb-2">{formData.knowledgeBase.title}</h4>
-              <p className="mb-2">{formData.knowledgeBase.content}</p>
-              <div className="grid grid-cols-2 gap-2">
-                {formData.knowledgeBase.images.map((img, index) => (
-                  <img key={index} src={img} alt="Knowledge Base" className="rounded-md" />
-                ))}
-              </div>
-            </div>
+          <div className="p-4">
+            <h2 className="text-xl font-bold mb-2">{formData.knowledgeBase.title}</h2>
+            <p className="mb-4">{formData.knowledgeBase.content}</p>
+            {formData.knowledgeBase.images && formData.knowledgeBase.images.map((image, index) => (
+              <img key={index} src={image} alt={`Knowledge Base Image ${index + 1}`} className="mb-2" />
+            ))}
           </div>
         </>
       ) : (
