@@ -24,6 +24,7 @@ function App() {
           {/* Homepage */}
           <Route path="/" element={
             <>
+
               <Hero />
               <Features />
               <MoreFeature />
@@ -53,6 +54,7 @@ function App() {
         <Footer />
       </div>
     </Router>
+
   );
 }
 

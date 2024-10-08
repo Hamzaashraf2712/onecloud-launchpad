@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import sidebarToggleIconUrl from '../svg/sidebar-toggle.svg'; // Path to the open sidebar SVG
 import closeSidebarIconUrl from '../svg/close-sidebar.svg'; // Path to the close sidebar SVG
+import ResourceTypeSelect from './ResourceTypeSelect'; // Adjust the path as necessary
 
 const PopupModal = ({ cloudPlatform, setCloudPlatform }) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -62,20 +63,7 @@ const PopupModal = ({ cloudPlatform, setCloudPlatform }) => {
 
         {/* Dropdown for Cloud Platform */}
         <div className="mt-4">
-          <label>Select Cloud Platform</label>
-          <select
-            className="mt-2 block w-full p-2 bg-gray-700 border border-gray-600 rounded"
-            onChange={handlePlatformChange}
-            value={cloudPlatform} // Set selected value based on prop
-          >
-            <option value="">Please Select Cloud Platform</option>
-            <option value="Azure">Azure</option>
-            <option value="AWS">AWS</option>
-            <option value="GCP">GCP</option>
-          </select>
-        </div>
-
-        {/* Customer Name */}
+          {/* Customer Name */}
         <div className="mt-4">
           <label className="block text-sm">Customer Name</label>
           <p className="text-lg font-semibold">QIA</p>
@@ -100,15 +88,30 @@ const PopupModal = ({ cloudPlatform, setCloudPlatform }) => {
             Copy
           </button>
         </div>
+          <label>Select Cloud Platform</label>
+          <select
+            className="mt-2 block w-full p-2 bg-gray-700 border border-gray-600 rounded"
+            onChange={handlePlatformChange}
+            value={cloudPlatform} // Set selected value based on prop
+          >
+            <option value="">Please Select Cloud Platform</option>
+            <option value="Azure">Azure</option>
+            <option value="AWS">AWS</option>
+            <option value="GCP">GCP</option>
+          </select>
+        </div>
+
+        
 
         {/* Button for connecting to Azure environment */}
         {cloudPlatform === 'Azure' && showConnectButton && (
-          <button
+          <><button
             className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
             onClick={openPopup}
           >
             Connect to Azure Environment
-          </button>
+          </button><ResourceTypeSelect /></>
+
         )}
 
        
